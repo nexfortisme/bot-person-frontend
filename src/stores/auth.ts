@@ -6,12 +6,12 @@ export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem('token') ?? '')
 
   const userPictureURL = computed(() => {
-    const parsedToken = jwtDecode(token.value)
+    const parsedToken: { user: { id: string, avatar: string } } = jwtDecode(token.value)
     return `https://cdn.discordapp.com/avatars/${parsedToken.user.id}/${parsedToken.user.avatar}.png`
   })
 
   const username = computed(() => {
-    const parsedToken = jwtDecode(token.value)
+    const parsedToken: { user: { global_name: string } } = jwtDecode(token.value)
     return parsedToken.user.global_name
   })
 
