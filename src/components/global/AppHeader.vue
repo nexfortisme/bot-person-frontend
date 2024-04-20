@@ -43,6 +43,7 @@ let logout = () => {
     >
     <el-sub-menu index="5-1" v-if="authStore.isAuthenticated">
       <template #title>
+        {{ authStore.username }} &nbsp;&nbsp;
         <el-avatar shape="square" :size="40" :src="authStore.userPictureURL" />
       </template>
       <el-menu-item index="5-1-1" @click="logout()">Logout</el-menu-item>
@@ -51,6 +52,10 @@ let logout = () => {
 </template>
 
 <style>
+.el-menu-item {
+  font-family: 'Roboto Mono', monospace;
+}
+
 .flex-grow {
   flex-grow: 1;
 }
