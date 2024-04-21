@@ -28,8 +28,6 @@ export const useAuthStore = defineStore('auth', () => {
 
       localStorage.setItem('token', parseToken)
       localStorage.setItem('refreshToken', parseRefreshToken)
-
-      console.log('tokens processed', token.value, refresh_token.value)
     } catch (error) {
       console.error('Error processing token:', error)
       throw new Error('Token processing failed')
@@ -37,6 +35,11 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function refreshToken() {
+
+    if (useAuthStore().refresh_token === '') {
+      return
+    }
+
     axios.get('http://localhost:3000/api/v1/auth/refresh', {
       headers: {
         Authorization: `Bearer ${useAuthStore().refresh_token}`
