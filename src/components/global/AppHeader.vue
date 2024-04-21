@@ -1,12 +1,11 @@
 <script lang="ts" setup>
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/auth';
 import { ref } from 'vue'
 
-let dummyCounter = ref(0)
-
 let authStore = useAuthStore()
-
+let dummyCounter = ref(0)
 const activeIndex = ref('1')
+
 const handleSelect = (key: string, keyPath: string[]) => {
   dummyCounter.value++
 }
@@ -16,8 +15,10 @@ let onLoginClick = () => {
 }
 
 let logout = () => {
+  // token.value = ''
   localStorage.removeItem('token')
-  window.location.href = '/'
+  localStorage.removeItem('refreshToken')
+  window.location.reload()
 }
 </script>
 

@@ -10,8 +10,7 @@ export default defineConfig({
   resolve: {
     dedupe: ['vue', 'vue-router'],
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-      
+      '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   }
 })

@@ -2,15 +2,12 @@
 import { RouterView } from 'vue-router'
 import AppFooter from './components/global/AppFooter.vue'
 import AppHeader from './components/global/AppHeader.vue'
-
-
-
 </script>
 
 <template>
   <div class="app-container">
     <header>
-      <AppHeader/>
+      <AppHeader />
     </header>
 
     <main class="contnet">

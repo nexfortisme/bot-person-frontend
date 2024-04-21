@@ -1,12 +1,14 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { jwtDecode } from 'jwt-decode'
+import axios from 'axios'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem('token') ?? '')
+  const refresh_token = ref(localStorage.getItem('refreshToken') ?? '')
 
   const userPictureURL = computed(() => {
-    const parsedToken: { user: { id: string, avatar: string } } = jwtDecode(token.value)
+    const parsedToken: { user: { id: string; avatar: string } } = jwtDecode(token.value)
     return `https://cdn.discordapp.com/avatars/${parsedToken.user.id}/${parsedToken.user.avatar}.png`
   })
 
@@ -19,14 +21,30 @@ export const useAuthStore = defineStore('auth', () => {
     return token.value !== '' // TODO - Check to see if the token is valid
   })
 
-  async function processToken(parseToken: string) {
+  async function processToken(parseToken: string, parseRefreshToken: string) {
     try {
       token.value = parseToken
+      refresh_token.value = parseRefreshToken
+
       localStorage.setItem('token', parseToken)
+      localStorage.setItem('refreshToken', parseRefreshToken)
+
+      console.log('tokens processed', token.value, refresh_token.value)
     } catch (error) {
       console.error('Error processing token:', error)
       throw new Error('Token processing failed')
     }
+  }
+
+  async function refreshToken() {
+    axios.get('http://localhost:3000/api/v1/auth/refresh', {
+      headers: {
+        Authorization: `Bearer ${useAuthStore().refresh_token}`
+      }
+    }).then((res) => {
+      processToken(res.data.token, res.data.refreshToken);
+      return res
+    })
   }
 
   function setToken(jwtToken: string) {
@@ -38,8 +56,19 @@ export const useAuthStore = defineStore('auth', () => {
   function logout() {
     token.value = ''
     localStorage.removeItem('token')
+    localStorage.removeItem('refreshToken')
     window.location.reload()
   }
 
-  return { token, isAuthenticated, username, userPictureURL, processToken, setToken, logout }
+  return {
+    token,
+    refresh_token,
+    isAuthenticated,
+    username,
+    userPictureURL,
+    processToken,
+    refreshToken,
+    setToken,
+    logout
+  }
 })

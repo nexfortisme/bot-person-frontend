@@ -10,9 +10,10 @@ const route = useRoute()
 
 onMounted(async () => {
   const token = route.query.token
+  const refreshToken = route.query.refreshToken
   if (token) {
     try {
-      await authStore.processToken(token as string)
+      await authStore.processToken(token as string, refreshToken as string)
       router.push('/') // Redirect to home after processing
     } catch (error) {
       console.error('Failed to process token:', error)
