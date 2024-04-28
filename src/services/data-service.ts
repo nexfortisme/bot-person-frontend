@@ -10,6 +10,18 @@ function test() {
   })
 }
 
+function getUserInfo() {
+  const userId = useAuthStore().userId;
+
+  return axios.get(`http://localhost:3000/api/v1/user/info?userId=${userId}`, {
+    headers: {
+      Authorization: `Bearer ${useAuthStore().token}`
+    }
+  })
+
+}
+
 export default {
-  test
+  test,
+  getUserInfo
 }

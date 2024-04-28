@@ -5,6 +5,7 @@ import PyLView from '../views/PyLView.vue'
 import HomePage from '@/components/HomePage.vue'
 import DashboardPage from '@/components/DashboardPage.vue'
 import AboutPage from '@/components/AboutPage.vue'
+import PyLHand from '@/components/pyl-tcg/PyLHand.vue'
 import { isAuthenticated, setToken } from '@/services/auth-service'
 import { jwtDecode } from 'jwt-decode'
 import { useAuthStore } from '@/stores/auth'
@@ -15,20 +16,20 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView as any,
+      component: HomeView,
       children: [
         {
           path: '/',
-          component: HomePage as any
+          component: HomePage
         },
         {
           path: '/dashboard',
-          component: DashboardPage as any
+          component: DashboardPage
         },
         {
           path: '/about',
-          component: AboutPage as any
-        },
+          component: AboutPage
+        }
       ],
       meta: {
         requiredAuth: true
@@ -36,7 +37,13 @@ const router = createRouter({
     },
     {
       path: '/pyl-tcg',
-      components: PyLView as any,
+      component: PyLView,
+      children: [
+        {
+          path: '/',
+          component: PyLHand
+        }
+      ],
       meta: {
         requiredAuth: true
       }
@@ -67,9 +74,9 @@ router.beforeEach((to, from, next) => {
 })
 
 function isTokenExpired(token: string) {
-  const decoded = jwtDecode(token);
-  const currentTime = Date.now() / 1000;
-  return (decoded.exp as number) < currentTime;
+  const decoded = jwtDecode(token)
+  const currentTime = Date.now() / 1000
+  return (decoded.exp as number) < currentTime
 }
 
 export default router

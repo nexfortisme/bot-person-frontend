@@ -7,6 +7,11 @@ export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem('token') ?? '')
   const refresh_token = ref(localStorage.getItem('refreshToken') ?? '')
 
+  const userId = computed(() => {
+    const parsedToken: { user: { id: string } } = jwtDecode(token.value)
+    return parsedToken.user.id
+  });
+
   const userPictureURL = computed(() => {
     const parsedToken: { user: { id: string; avatar: string } } = jwtDecode(token.value)
     return `https://cdn.discordapp.com/avatars/${parsedToken.user.id}/${parsedToken.user.avatar}.png`
@@ -42,7 +47,8 @@ export const useAuthStore = defineStore('auth', () => {
 
     axios.get('http://localhost:3000/api/v1/auth/refresh', {
       headers: {
-        Authorization: `Bearer ${useAuthStore().refresh_token}`
+        Authorization: `Bearer ${useAuthStore().refresh_token}`,
+        Refresh: `Bearer ${useAuthStore().refresh_token}`
       }
     }).then((res) => {
       processToken(res.data.token, res.data.refreshToken);
@@ -66,6 +72,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     token,
     refresh_token,
+    userId,
     isAuthenticated,
     username,
     userPictureURL,
