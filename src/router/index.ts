@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import SettingsView from '../views/SettingsView.vue'
 import HomePage from '@/components/HomePage.vue'
 import DashboardPage from '@/components/DashboardPage.vue'
 import AboutPage from '@/components/AboutPage.vue'
-import { isAuthenticated, setToken } from '@/services/auth-service'
+import { isAuthenticated } from '@/services/auth-service'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,11 +26,18 @@ const router = createRouter({
         {
           path: '/about',
           component: AboutPage
-        }
+        },
       ],
       meta: {
         requiredAuth: true
       }
+    },
+    {
+      path: '/settings',
+      component: SettingsView,
+      meta: {
+        requiredAuth: true
+      },
     },
     {
       path: '/login',

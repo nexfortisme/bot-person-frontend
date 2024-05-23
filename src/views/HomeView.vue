@@ -2,9 +2,9 @@
 
 <template>
   <main>
-    <div style="text-align: center">
+    <!-- <div style="text-align: center">
       <h1>Landing Page</h1>
-    </div>
+    </div> -->
     <RouterView />
   </main>
 </template>

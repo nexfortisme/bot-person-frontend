@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/auth'
 import { ref } from 'vue'
 
 let authStore = useAuthStore()
@@ -47,7 +47,12 @@ let logout = () => {
         {{ authStore.username }} &nbsp;&nbsp;
         <el-avatar shape="square" :size="40" :src="authStore.userPictureURL" />
       </template>
-      <el-menu-item index="5-1-1" @click="logout()">Logout</el-menu-item>
+      <RouterLink to="/settings">
+        <el-menu-item index="5-1-1">Settings</el-menu-item>
+      </RouterLink>
+      <RouterLink to="">
+        <el-menu-item index="5-1-2" @click="logout()">Logout</el-menu-item>
+      </RouterLink>
     </el-sub-menu>
   </el-menu>
 </template>
