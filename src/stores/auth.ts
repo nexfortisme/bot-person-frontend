@@ -40,14 +40,29 @@ export const useAuthStore = defineStore('auth', () => {
       return
     }
 
-    axios.get('http://localhost:3000/api/v1/auth/refresh', {
+    const response = await fetch('http://localhost:3000/api/v1/auth/refresh', {
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${useAuthStore().refresh_token}`
       }
-    }).then((res) => {
-      processToken(res.data.token, res.data.refreshToken);
-      return res
     })
+
+    console.log('refresh token response', response)
+
+    if (!response.ok) {
+      console.log('refresh token failed')
+      return
+    } else {
+      const refreshData = await response.json()
+      console.log('token refreshed', refreshData.token, refreshData.refreshToken)
+      processToken(refreshData.token, refreshData.refreshToken)
+    }
+
+    // .then((res) => {
+    //   console.log('token refreshed', res.data);
+    //   processToken(res.data.token, res.data.refreshToken);
+    //   return res
+    // })
   }
 
   function setToken(jwtToken: string) {
